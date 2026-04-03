@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import attendanceService from '../../services/attendanceService';
 import { formatDate, getStatusBadgeClass } from '../../utils/helpers';
-import { MdAccessTime, MdLoginSharp, MdLogout } from 'react-icons/md';
+import { MdAccessTime, MdLogin, MdLogout } from 'react-icons/md';
 
 const AttendancePage = () => {
   const { user } = useSelector((s) => s.auth);
@@ -78,7 +78,7 @@ const AttendancePage = () => {
               disabled={checkedIn}
               className="btn-success flex items-center gap-2 disabled:opacity-50"
             >
-              <MdLoginSharp size={18} />
+              <MdLogin size={18} />
               Check In
             </button>
             <button
