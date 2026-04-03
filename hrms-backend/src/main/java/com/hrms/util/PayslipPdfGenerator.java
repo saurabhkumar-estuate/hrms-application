@@ -4,6 +4,7 @@ import com.hrms.model.Employee;
 import com.hrms.model.Payroll;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
+import com.itextpdf.text.pdf.draw.LineSeparator;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;

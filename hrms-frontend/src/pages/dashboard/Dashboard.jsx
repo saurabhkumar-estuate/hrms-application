@@ -20,6 +20,7 @@ const Dashboard = () => {
   });
   const [deptData, setDeptData] = useState([]);
   const [recentLeaves, setRecentLeaves] = useState([]);
+  const [attendanceChartData, setAttendanceChartData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -45,6 +46,27 @@ const Dashboard = () => {
         );
 
         setRecentLeaves((leaves.data || []).slice(0, 5));
+
+        // Build weekly attendance chart from today's data
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const today = new Date();
+        const weekData = [];
+        for (let i = 4; i >= 0; i--) {
+          const d = new Date(today);
+          d.setDate(today.getDate() - i);
+          if (d.getDay() === 0 || d.getDay() === 6) continue; // skip weekends
+          weekData.push({ name: days[d.getDay()], present: 0, absent: 0, late: 0 });
+        }
+        // populate today
+        if (weekData.length > 0) {
+          const todayEntry = weekData[weekData.length - 1];
+          (todayAttendance.data || []).forEach((a) => {
+            if (a.status === 'PRESENT') todayEntry.present++;
+            else if (a.status === 'ABSENT') todayEntry.absent++;
+            else if (a.status === 'LATE') todayEntry.late++;
+          });
+        }
+        setAttendanceChartData(weekData);
       } catch (err) {
         console.error('Dashboard fetch error:', err);
       } finally {
@@ -55,13 +77,6 @@ const Dashboard = () => {
     fetchDashboardData();
   }, []);
 
-  const attendanceChartData = [
-    { name: 'Mon', present: 18, absent: 2, late: 3 },
-    { name: 'Tue', present: 20, absent: 1, late: 2 },
-    { name: 'Wed', present: 17, absent: 3, late: 4 },
-    { name: 'Thu', present: 21, absent: 1, late: 1 },
-    { name: 'Fri', present: 19, absent: 2, late: 2 },
-  ];
 
   const statCards = [
     {
